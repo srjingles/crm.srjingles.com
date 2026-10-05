@@ -7,6 +7,7 @@ namespace Relaticle\EmailIntegration\Services;
 use App\Models\User;
 use Carbon\CarbonInterface;
 use Filament\Facades\Filament;
+use Locale;
 use Relaticle\EmailIntegration\Agents\ThreadSummarizer;
 use Relaticle\EmailIntegration\Enums\EmailPrivacyTier;
 use Relaticle\EmailIntegration\Models\AiSummary;
@@ -68,6 +69,8 @@ final readonly class EmailThreadSummaryService
         foreach ($entries as $index => $entry) {
             $lines = [...$lines, ...$this->emailLines($index + 1, $entry['email'], $entry['tier'])];
         }
+
+        $lines[] = 'Write the summary in '.Locale::getDisplayLanguage(app()->getLocale(), 'en').'.';
 
         return implode("\n", $lines);
     }
