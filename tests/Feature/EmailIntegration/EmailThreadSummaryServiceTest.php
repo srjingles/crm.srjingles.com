@@ -331,3 +331,41 @@ it('shows a failure notice instead of erroring when the AI provider rejects the 
     'invalid api key' => [401, RequestException::class],
     'provider unavailable' => [503, ProviderOverloadedException::class],
 ]);
+
+it('asks for the summary in the language of the app locale', function (string $locale, string $language): void {
+    app()->setLocale($locale);
+    $thread = makeThreadWithEmail();
+    $email = $thread->emails()->firstOrFail();
+    $person = People::factory()->create(['workspace_id' => $this->workspace->id, 'creator_id' => $this->owner->id]);
+    $person->emails()->attach($email->getKey());
+    $prompt = null;
+    ThreadSummarizer::fake(function (string $input) use (&$prompt): string {
+        $prompt = $input;
+
+        return 'Thread summary';
+    });
+
+    livewire(EmailsRelationManager::class, [
+        'ownerRecord' => $person,
+        'pageClass' => ViewPeople::class,
+    ])
+        ->mountAction('summarizeThread', arguments: ['emailId' => $email->getKey()])
+        ->assertMountedActionModalSee('Thread summary');
+
+    expect($prompt)->toEndWith("Write the summary in {$language}.");
+})->with([
+    'english' => ['en', 'English'],
+    'spanish' => ['es', 'Spanish'],
+    'brazilian portuguese' => ['pt_BR', 'Portuguese'],
+]);
+
+it('regenerates a cached summary when the app locale changes', function (): void {
+    $thread = makeThreadWithEmail();
+    ThreadSummarizer::fake(['English summary', 'Resumen en español']);
+    resolve(EmailThreadSummaryService::class)->getSummary($thread, $this->owner);
+    app()->setLocale('es');
+
+    $summary = resolve(EmailThreadSummaryService::class)->getSummary($thread->fresh(), $this->owner);
+
+    expect($summary->summary)->toBe('Resumen en español');
+});
