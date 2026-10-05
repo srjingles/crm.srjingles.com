@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
+use App\Enums\CrmEntity;
 use App\Enums\CustomFields\CompanyField as CompanyCustomField;
 use App\Enums\CustomFields\NoteField as NoteCustomField;
 use App\Enums\CustomFields\OpportunityField as OpportunityCustomField;
@@ -13,13 +14,8 @@ use App\Enums\CustomFieldType;
 use App\Enums\OnboardingUseCase;
 use App\Events\WorkspaceCreated;
 use App\Features\OnboardSeed;
-use App\Models\Company;
 use App\Models\CustomField;
 use App\Models\CustomFieldOption;
-use App\Models\Note;
-use App\Models\Opportunity;
-use App\Models\People;
-use App\Models\Task;
 use App\Models\Workspace;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -34,15 +30,6 @@ use Relaticle\OnboardSeed\OnboardSeeder;
 
 final readonly class CreateWorkspaceCustomFields
 {
-    /** @var array<class-string, class-string> */
-    private const array MODEL_ENUM_MAP = [
-        Company::class => CompanyCustomField::class,
-        Opportunity::class => OpportunityCustomField::class,
-        Note::class => NoteCustomField::class,
-        People::class => PeopleCustomField::class,
-        Task::class => TaskCustomField::class,
-    ];
-
     public function __construct(
         private OnboardSeeder $onboardSeeder,
     ) {}
@@ -81,7 +68,9 @@ final readonly class CreateWorkspaceCustomFields
         $options = [];
         $entityTypes = [];
 
-        foreach (self::MODEL_ENUM_MAP as $modelClass => $enumClass) {
+        foreach (CrmEntity::cases() as $crmEntity) {
+            $modelClass = $crmEntity->model();
+            $enumClass = $crmEntity->customFieldEnum();
             $entityType = Entities::getEntity($modelClass)?->getAlias() ?? $modelClass;
             $entityTypes[] = $entityType;
 

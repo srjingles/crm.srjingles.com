@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums\CustomFields;
 
+use App\Enums\CrmEntity;
 use App\Enums\CustomFieldType;
 
 /**
@@ -24,9 +25,7 @@ enum NoteField: string
 
     public function getDisplayName(): string
     {
-        return match ($this) {
-            self::BODY => 'Body',
-        };
+        return __('custom-fields.fields.'.CrmEntity::Note->value.'.'.$this->value);
     }
 
     public function isListToggleableHidden(): bool

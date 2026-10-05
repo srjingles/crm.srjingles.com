@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums\CustomFields;
 
+use App\Enums\CrmEntity;
 use App\Enums\CustomFieldType;
 
 /**
@@ -30,12 +31,7 @@ enum PeopleField: string
 
     public function getDisplayName(): string
     {
-        return match ($this) {
-            self::EMAILS => 'Emails',
-            self::PHONE_NUMBER => 'Phone Number',
-            self::JOB_TITLE => 'Job Title',
-            self::LINKEDIN => 'LinkedIn',
-        };
+        return __('custom-fields.fields.'.CrmEntity::People->value.'.'.$this->value);
     }
 
     public function isListToggleableHidden(): bool
