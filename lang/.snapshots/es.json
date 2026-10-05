@@ -1,5 +1,5 @@
 {
-    "generated_at": "2026-10-05T10:55:16+00:00",
+    "generated_at": "2026-10-05T11:02:43+00:00",
     "en_hashes": {
         "access-tokens.actions.create": "4759498ac2a719c619e2c8cf8ee60af2d2407425e95d308eb208425b2a6d427a",
         "access-tokens.connectors.actions.revoke": "87e6d00bbf53ec5ae251de23ace84d5cf01c69deae04cfff08a5fe353a9853bb",
@@ -929,6 +929,7 @@
         "filament/pages/record-emails.actions.summarize_thread.copied": "8d525e5f158b9afe05f3122af363ac67763bdc4e1395b46597b320c289766ce3",
         "filament/pages/record-emails.actions.summarize_thread.copy": "e21f935f11d7e966dbbae78da9daa378fe8142a14e7c0cd7434183005faa6c5c",
         "filament/pages/record-emails.actions.summarize_thread.empty": "c6365815cd569420d44b19bda9fd50b1ac4d6ff53bc7bad019a141d423ad954b",
+        "filament/pages/record-emails.actions.summarize_thread.failed": "b46ef819474fba13664dea964a5112e32b1a9fc496bfcd42977fffbf9a1e98d6",
         "filament/pages/record-emails.actions.summarize_thread.generated": "599b56b929513a9a813fe72c4c37fb7fae56fc4c7d7eda61295fb825b21e35f9",
         "filament/pages/record-emails.actions.summarize_thread.label": "8c7b27d5316b67a4fc51d908129c93887574a50d93e8f87dec56539c54a85792",
         "filament/pages/record-emails.actions.summarize_thread.modal_heading": "365d4bd7067d89886668f0a07345f3d0d8d6adc3839a1f9312bea39f2ac2b6cd",

@@ -13,6 +13,7 @@ return [
             'label' => 'Resumir hilo',
             'modal_heading' => 'Resumen del hilo con IA',
             'empty' => 'No hay ningún resumen disponible para este hilo.',
+            'failed' => 'No se ha podido generar el resumen. Inténtalo de nuevo en unos minutos.',
             'generated' => 'Generado :time',
             'copy' => 'Copiar',
             'copied' => 'Copiado',
