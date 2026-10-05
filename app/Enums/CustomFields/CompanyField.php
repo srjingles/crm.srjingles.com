@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums\CustomFields;
 
+use App\Enums\CrmEntity;
 use App\Enums\CustomFieldType;
 
 enum CompanyField: string
@@ -27,11 +28,7 @@ enum CompanyField: string
 
     public function getDisplayName(): string
     {
-        return match ($this) {
-            self::ICP => 'ICP',
-            self::DOMAINS => 'Domains',
-            self::LINKEDIN => 'LinkedIn',
-        };
+        return __('custom-fields.fields.'.CrmEntity::Company->value.'.'.$this->value);
     }
 
     public function getFieldType(): string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums\CustomFields;
 
+use App\Enums\CrmEntity;
 use App\Enums\CustomFieldType;
 use Relaticle\CustomFields\Enums\CustomFieldWidth;
 
@@ -40,12 +41,7 @@ enum TaskField: string
      */
     public function getDisplayName(): string
     {
-        return match ($this) {
-            self::STATUS => 'Status',
-            self::PRIORITY => 'Priority',
-            self::DESCRIPTION => 'Description',
-            self::DUE_DATE => 'Due Date',
-        };
+        return __('custom-fields.fields.'.CrmEntity::Task->value.'.'.$this->value);
     }
 
     /**

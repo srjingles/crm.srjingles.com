@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use App\Enums\CustomFields\CompanyField;
+use App\Enums\CustomFields\NoteField;
+use App\Enums\CustomFields\OpportunityField;
+use App\Enums\CustomFields\PeopleField;
+use App\Enums\CustomFields\TaskField;
 use App\Models\Company;
 use App\Models\Note;
 use App\Models\Opportunity;
@@ -40,6 +45,18 @@ enum CrmEntity: string
             self::Opportunity => Opportunity::class,
             self::Task => Task::class,
             self::Note => Note::class,
+        };
+    }
+
+    /** @return class-string<CompanyField|PeopleField|OpportunityField|TaskField|NoteField> */
+    public function customFieldEnum(): string
+    {
+        return match ($this) {
+            self::Company => CompanyField::class,
+            self::People => PeopleField::class,
+            self::Opportunity => OpportunityField::class,
+            self::Task => TaskField::class,
+            self::Note => NoteField::class,
         };
     }
 

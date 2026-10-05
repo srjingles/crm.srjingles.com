@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CrmEntity;
 use Database\Factories\CustomFieldFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Relaticle\CustomFields\Models\CustomField as BaseCustomField;
@@ -40,6 +42,22 @@ final class CustomField extends BaseCustomField
     public function hasValues(): bool
     {
         return CustomFieldValue::query()->holdingAValue($this)->exists();
+    }
+
+    // A system field's name is locked, so it follows the app locale while the row keeps the seeded name.
+    /** @return Attribute<string, never> */
+    protected function name(): Attribute
+    {
+        return Attribute::get(function (string $value, array $attributes): string {
+            if (! (bool) ($attributes['system_defined'] ?? false)) {
+                return $value;
+            }
+
+            $definition = CrmEntity::tryFrom((string) ($attributes['entity_type'] ?? ''))
+                ?->customFieldEnum()::tryFrom((string) ($attributes['code'] ?? ''));
+
+            return $definition?->getDisplayName() ?? $value;
+        });
     }
 
     /** @return CustomFieldFactory */

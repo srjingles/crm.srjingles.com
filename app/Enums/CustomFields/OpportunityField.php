@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums\CustomFields;
 
+use App\Enums\CrmEntity;
 use App\Enums\CustomFieldType;
 
 enum OpportunityField: string
@@ -47,11 +48,7 @@ enum OpportunityField: string
 
     public function getDisplayName(): string
     {
-        return match ($this) {
-            self::AMOUNT => 'Amount',
-            self::CLOSE_DATE => 'Close Date',
-            self::STAGE => 'Stage',
-        };
+        return __('custom-fields.fields.'.CrmEntity::Opportunity->value.'.'.$this->value);
     }
 
     public function isListToggleableHidden(): bool
